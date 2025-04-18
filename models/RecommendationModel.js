@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import database from "../db/conn.js";
 
-import { Messurement } from "./MeasurementModel.js";
+import { Measurement } from "./MeasurementModel.js";
 import { Product } from "./ProductModel.js";
 import { Pool } from "./PoolModel.js";
 
@@ -15,7 +15,7 @@ export const Recommendation = database.define("Recommendations", {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
-            model: Messurement,
+            model: Measurement,
             key: 'id'
         }
     },

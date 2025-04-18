@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import database from "../db/conn.js";
 
-export const Messurement = database.define("Measurements", {
+export const Measurement = database.define("Measurements", {
     id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,

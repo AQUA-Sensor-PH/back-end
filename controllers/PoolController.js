@@ -1,30 +1,44 @@
-import { Pool } from "../models/PoolModel";
+import { Pool } from "../models/PoolModel.js";
 
 // CREATE POOL
 
 export async function createPool(req, res) {
     try {
-        const pool = await Pool.create(req.body);
-        res.status(201).send({ messege: "Customer created", pool });
+        const { name, length, width, depth } = req.body;
+
+        if (!length || !width || !depth) {
+            return res.status(400).json({ message: "Todos os campos são obrigatórios" });
+        };
+
+        const volume = length * width * depth;
+
+        const pool = await Pool.create({
+            name,
+            length,
+            width,
+            depth,
+            volume
+        });
+        res.status(201).send({ messege: "Pool created", pool });
     } catch (error) {
-        res.status(500).send({ messege: "Error creating customer", error });
+        res.status(500).send({ messege: "Error creating pool", error });
     };
 };
 
 // GET ALL POOL
 
-export async function getAllCustomers(req, res) {
+export async function getAllPools(req, res) {
     try {
         const pool = await Pool.findAll();
-        res.status(200).json({ message: "Clientes Listados", pool });
+        res.status(200).json({ message: "Piscinas Listados", pool });
     } catch (error) {
         res.status(400).json(error);
     };
 };
 
-// UPDATE CUSTOMER
+// UPDATE POOL
 
-export async function updateCustomer(req, res) {
+export async function updatePool(req, res) {
     try {
         const { id } = req.params;
         const { name, length, width, depth, volume } = req.body;
@@ -37,26 +51,26 @@ export async function updateCustomer(req, res) {
             const updatedPool = await Pool.findByPk(id);
             return res.status(200).json(updatedPool);
         } else {
-            return res.status(404).json({ message: "Customer não encontrado" });
+            return res.status(404).json({ message: "Piscinas não encontradas" });
         }
     } catch (error) {
-        res.status(500).json({ message: "Erro ao atualizar o Customer", error });
+        res.status(500).json({ message: "Erro ao atualizar a Piscina", error });
     }
 };
 
-// DELETE CUSTOMER
+// DELETE POOL
 
-export async function deleteCustomer(req, res) {
+export async function deletePool(req, res) {
     try {
         const { id } = req.params;
         const result = await Pool.destroy({ where: { id } });
 
         if (result) {
-            return res.status(200).json({ message: "Customer deletado com sucesso" });
+            return res.status(200).json({ message: "Piscina deletado com sucesso" });
         } else {
-            return res.status(404).json({ message: "Customer não encontrado" });
+            return res.status(404).json({ message: "Piscina não encontrado" });
         };
     } catch (error) {
-        res.status(500).json({ message: "Erro ao deletar o Customer", error });
+        res.status(500).json({ message: "Erro ao deletar o Piscina", error });
     };
 };

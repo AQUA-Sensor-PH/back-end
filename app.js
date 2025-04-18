@@ -1,9 +1,10 @@
 import express from 'express';
 import database from './db/conn.js';
-import router from './routes/CustomerRoutes.js';
-import { Pool } from './models/PoolModel.js';
+import customerRoutes from './routes/CustomerRoutes.js';
+import poolRoutes from './routes/PoolRoutes.js';
+
 import { Product } from './models/ProductModel.js';
-import { Messurement } from './models/MeasurementModel.js';
+import { Measurement } from './models/MeasurementModel.js';
 import { Recommendation } from './models/RecommendationModel.js';
 
 const app = express();
@@ -11,7 +12,8 @@ const PORT = 3333;
 
 app.use(express.json());
 
-app.use("/aqua/customer", router);
+app.use("/aqua/customer", customerRoutes);
+app.use("/aqua/pool", poolRoutes);
 
 app.listen(PORT, () => {
     console.log(`O servidor está rodando na porta ${PORT}`);

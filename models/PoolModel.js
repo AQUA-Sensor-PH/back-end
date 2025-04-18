@@ -25,7 +25,7 @@ export const Pool = database.define("Pool", {
     },
     volume: {
         type: DataTypes.FLOAT,
-        allowNull: false
+        allowNull: true
     }
 }, {
     timestamps: true,
