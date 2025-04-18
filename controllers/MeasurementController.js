@@ -1,10 +1,10 @@
-import { Measurement } from "../models/MeasurementModel";
+import { Measurement } from "../models/MeasurementModel.js";
 
 // CREATE MEASUEMENT
 
 export async function createMeasurement(req, res) {
     try{
-        const measurement = await Measurement.create(requestAnimationFrame.body);
+        const measurement = await Measurement.create(req.body);
         res.status(200).json({ message: "Measurement created", measurement});
     } catch (error) {
         res.status(500).json({ message: "Error creating measurement", error });

@@ -21,7 +21,7 @@ export const Recommendation = database.define("Recommendations", {
     },
     id_product: {
         type: DataTypes.UUID,
-        allowNull: false,
+        allowNull: true,
         references: {
             model: Product,
             key: 'id'
