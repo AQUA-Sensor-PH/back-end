@@ -35,14 +35,15 @@ app.use("/aqua/recommendation", recommendationRoutes);
 // });
 
 console.log("TESTE")
-app.post('/api/valor', (req, res) => {
-    const { valor } = req.body;
+app.post('/api/ph', (req, res) => {
+    const { ph, raw } = req.body;
 
-    if (valor !== undefined) {
-        console.log(`📥 Valor recebido da ESP32: ${valor}`);
-        res.status(200).json({ message: 'Valor recebido com sucesso', valor });
+    if (ph && raw) {
+      console.log(`📥 pH recebido: ${ph.toFixed(2)} | Raw: ${raw}`);
+      res.status(200).send('OK');
     } else {
-        res.status(400).json({ message: 'Valor não encontrado no corpo da requisição' });
+      console.log("❌ Dados inválidos recebidos:", req.body);
+      res.status(400).send('Dados inválidos');
     }
 });
 
