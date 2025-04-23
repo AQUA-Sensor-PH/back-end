@@ -13,8 +13,10 @@ import { createMeasurement, getAllMeasurements } from '../controllers/Measuremen
 
 const router = express.Router();
 
+router.post('/', createMeasurement); // Rota para criar uma nova medição
+
 // Rota para criar uma nova medição
-router.post('/valor', createMeasurement);
+// router.post('/valor', createMeasurement);
 
 // Rota para buscar todas as medições
 router.get('/get_all_measurements', getAllMeasurements);

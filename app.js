@@ -1,5 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import database from './db/conn.js';
 import customerRoutes from './routes/CustomerRoutes.js';
 import poolRoutes from './routes/PoolRoutes.js';
@@ -11,12 +12,13 @@ const app = express();
 const PORT = 3333;
 
 app.use(express.json());
+app.use(cors());
 app.use(bodyParser.json());
 
 app.use("/aqua/customer", customerRoutes);
 app.use("/aqua/pool", poolRoutes);
 app.use("/aqua/measurement", measurementRoutes);
-app.use("/api", measurementRoutes);
+app.use("/api/ph", measurementRoutes);
 app.use("/aqua/product", productRoutes);
 app.use("/aqua/recommendation", recommendationRoutes);
 

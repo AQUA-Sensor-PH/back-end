@@ -5,23 +5,24 @@ import { Measurement } from "../models/MeasurementModel.js";
 export const createMeasurement = async (req, res) => {
     const { ph, raw } = req.body;
 
-    if (!ph || !raw) {
+    if (ph != null && raw != null) {
+        try {
+            const measurement = await Measurement.create({
+                current_ph: parseFloat(parseFloat(ph).toFixed(2)),
+                raw: parseFloat(raw)
+            });
+
+            console.log(`📥 pH salvo no banco: ${measurement.current_ph} | Temp: ${measurement.raw}`);
+            res.status(200).json({ message: "Measurement saved", measurement });
+
+        } catch (error) {
+            console.error("❌ Erro ao salvar no banco:", error);
+            res.status(500).json({ message: "Erro ao salvar medição", error });
+        }
+    } else {
         console.log("❌ Dados inválidos recebidos:", req.body);
-        return res.status(400).send("Dados inválidos");
-    }
-
-    try {
-        const newMeasurement = await Measurement.create({
-            current_ph: parseFloat(ph),
-            temperature: parseFloat(raw)
-        });
-
-        console.log(`📥 Medição salva - pH: ${ph.toFixed(2)} | Temperatura: ${raw}`);
-        res.status(201).json(newMeasurement);
-    } catch (error) {
-        console.error("❌ Erro ao salvar medição:", error);
-        res.status(500).send("Erro interno do servidor");
-    }
+        res.status(400).send('Dados inválidos');
+    };
 };
 
 // GET ALL MEASUEMENTS

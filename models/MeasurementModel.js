@@ -11,7 +11,7 @@ export const Measurement = database.define("Measurements", {
         type: DataTypes.FLOAT,
         allowNull: false
     },
-    temperature: {
+    raw: {
         type: DataTypes.FLOAT,
         allowNull: false
     }
