@@ -23,7 +23,7 @@ export const Customer = database.define("Customer", {
     },
     pools: {
         type: DataTypes.UUID,
-        allowNull: false,
+        allowNull: true,
         references: {
             model: 'Pools',
             key: 'id'

@@ -1,13 +1,47 @@
-import { Customer } from "../models/CustimerModel.js";
+import { Customer } from "../models/CustomerModel.js";
+import bcrypt from "bcrypt";
 
 // CREATE CUSTOMER
 
 export async function createCustomer(req, res) {
     try {
-        const customer = await Customer.create(req.body);
-        res.status(201).send({ messege: "Customer created", customer });
+        const { password, ...rest } = req.body;
+
+        // Gera o hash da senha
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        // Cria o customer com a senha criptografada
+        const customer = await Customer.create({ ...rest, password: hashedPassword });
+
+        res.status(201).send({ message: "Customer created", customer });
     } catch (error) {
-        res.status(500).send({ messege: "Error creating customer", error });
+        res.status(500).send({ message: "Error creating customer", error: error.message });
+    };
+};
+
+// LOGIN CUSTOMER
+
+export async function loginCustomer(req, res) {
+    try {
+        const { email, password } = req.body;
+        const customer = await Customer.findOne({ where: { email } });
+
+        if(!customer) {
+            return res.status(404).json({ message: "Customer não encontrado" });
+        };
+
+        const match = await bcrypt.compare(password, customer.password);
+
+        if (!match) {
+            return res.status(401).json({ message: "Senha incorreta" });
+        };
+
+        res.json({ message: "Login bem-sucedido", customer });
+
+
+    } catch (error) {
+        res.status(500).json({ message: "Erro ao fazer login", error });
     };
 };
 
