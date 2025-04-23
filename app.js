@@ -34,17 +34,27 @@ app.use("/aqua/recommendation", recommendationRoutes);
 //     };
 // });
 
-console.log("TESTE")
-app.post('/api/ph', (req, res) => {
-    const { ph, raw } = req.body;
+let ultimoPH = null;
 
-    if (ph && raw) {
-      console.log(`📥 pH recebido: ${ph.toFixed(2)} | Raw: ${raw}`);
-      res.status(200).send('OK');
-    } else {
-      console.log("❌ Dados inválidos recebidos:", req.body);
-      res.status(400).send('Dados inválidos');
-    }
+app.post('/api/ph', (req, res) => {
+  const { ph, raw } = req.body;
+
+  if (ph && raw) {
+    ultimoPH = { ph: ph.toFixed(2), raw };  // Armazena os dados recebidos
+    console.log(`📥 pH recebido: ${ph.toFixed(2)} | Raw: ${raw}`);
+    res.status(200).send('OK');
+  } else {
+    console.log("❌ Dados inválidos recebidos:", req.body);
+    res.status(400).send('Dados inválidos');
+  }
+});
+
+app.get('/api/ph', (req, res) => {
+  if (ultimoPH) {
+    res.json(ultimoPH);
+  } else {
+    res.status(404).send('Nenhum dado de pH disponível');
+  }
 });
 
 app.listen(PORT, () => {
