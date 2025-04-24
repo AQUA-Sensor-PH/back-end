@@ -1,5 +1,7 @@
 import { Measurement } from "../models/MeasurementModel.js";
 
+import { gerarRecomendacao } from "../services/recommendationService.js";
+
 // CREATE MEASUEMENT
 
 export const createMeasurement = async (req, res) => {
@@ -12,6 +14,8 @@ export const createMeasurement = async (req, res) => {
                 raw: parseFloat(raw)
             });
 
+            await gerarRecomendacao({ measurement });
+
             console.log(`📥 pH salvo no banco: ${measurement.current_ph} | Temp: ${measurement.raw}`);
             res.status(200).json({ message: "Measurement saved", measurement });
 
@@ -22,7 +26,7 @@ export const createMeasurement = async (req, res) => {
     } else {
         console.log("❌ Dados inválidos recebidos:", req.body);
         res.status(400).send('Dados inválidos');
-    };
+    };
 };
 
 // GET ALL MEASUEMENTS

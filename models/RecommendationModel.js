@@ -29,7 +29,7 @@ export const Recommendation = database.define("Recommendations", {
     },
     pool_volume: {
         type: DataTypes.UUID,
-        allowNull: false,
+        allowNull: true,
         references: {
             model: Pool,
             key: 'id'
@@ -37,15 +37,23 @@ export const Recommendation = database.define("Recommendations", {
     },
     desired_ph: {
         type: DataTypes.FLOAT,
-        allowNull: false
+        allowNull: true
     },
     product_quantity: {
         type: DataTypes.FLOAT,
-        allowNull: false
+        allowNull: true
     },
     unit_measure: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
+    },
+    measured_ph: {
+        type: DataTypes.FLOAT,
+        allowNull: true
+    },
+    status: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 }, {
     timestamps: true,
